@@ -1,0 +1,72 @@
+{
+  "products": [
+    {
+      "id": 123,
+      "name": "une bague",
+      "image": "https://api.lorem.space/image/fashion?w=400&h=400&hash=8B7BCDC2",
+      "category": [
+        439
+      ]
+    },
+    {
+      "id": 453,
+      "name": "une montre",
+      "image": "https://api.lorem.space/image/fashion?w=400&h=400&hash=500B67FB",
+      "category": [
+        672
+      ]
+    },
+    {
+      "id": 864,
+      "name": "un bracelet",
+      "image": "https://api.lorem.space/image/fashion?w=400&h=400&hash=A89D0DE6",
+      "category": [
+        187
+      ]
+    },
+    {
+      "id": 187,
+      "name": "des boucles d'oreilles",
+      "image": "https://api.lorem.space/image/fashion?w=400&h=400&hash=225E6693",
+      "category": [
+        672
+      ]
+    },
+    {
+      "id": 497,
+      "name": "des accessoires de mode",
+      "image": "https://api.lorem.space/image/fashion?w=400&h=400&hash=B0E33EF4",
+      "category": [
+        187,
+        439
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "id": 0,
+      "name": "Touts les produits",
+      "icon": "fa-globe"
+    },
+    {
+      "id": 187,
+      "name": "Catégorie 2",
+      "icon": "fa-baseball"
+    },
+    {
+      "id": 672,
+      "name": "Catégorie 3",
+      "icon": "fa-gem"
+    },
+    {
+      "name": "Rings",
+      "icon": "fa-baseball",
+      "id": 673
+    },
+    {
+      "name": "Necklaces",
+      "icon": "fa-baseball",
+      "id": 674
+    }
+  ]
+}
