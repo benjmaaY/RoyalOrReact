@@ -3,6 +3,7 @@ import axios from "axios"
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import Swal from 'sweetalert2'
+import {NavLink} from "react-router-dom";
 
 
 
@@ -91,14 +92,16 @@ export default function Inventory() {
             }
           })
         }} className="categoryBtn"><i className="fa-solid fa-plus" style={{marginRight: '0.7rem'}} />Ajouter une nouvelle catégorie</button>
-        <a href="/productEdit.html" style={{textDecoration: 'none', color: 'black'}} className="categoryBtn active"><i className="fa-solid fa-gear" style={{marginRight: '0.7rem'}} />Gérer vos produits</a>
+        <NavLink to="/products">
+        <a style={{textDecoration: 'none', color: 'black'}} className="categoryBtn active"><i className="fa-solid fa-gear" style={{marginRight: '0.7rem'}} />Gérer vos produits</a>
+        </NavLink>
       </div>
       <br />
       <div className="row container tableInfos">
         <table className="table table-striped">
           <thead>
             <tr>
-              <th scope="col">Catégorie du produit:</th>
+              <th scope="col">Nom du catégorie:</th>
               <th scope="col">Actions:</th>
             </tr>
           </thead>

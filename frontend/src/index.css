@@ -467,3 +467,16 @@ main {
   padding-bottom: 0.4rem;
   padding-left: 1rem;
 }
+
+.swal-height {
+  height: 60vh;
+  overflow: hidden;
+}
+
+.swal2-html-container {
+  overflow: hidden;
+}
+
+.basic-multi-select {
+  height: 50%;
+}

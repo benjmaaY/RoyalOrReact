@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import axios from "axios"
 
 
+
 export default function HomePage() {
 
     const taxRate = 3;
@@ -207,6 +208,9 @@ export default function HomePage() {
         <table id="container" style={{height: '80vh', width: "100%"}}>
           <tbody><tr>
               <td style={{overflow: 'auto', height: '50px'}} valign="top">
+                {cart.length == 0 && 
+                  <h3>Commande vide</h3>
+                }
                 {cart.map(singleProduct => {
                     return (
                         <div className="singleProduct">
@@ -293,7 +297,29 @@ export default function HomePage() {
                     </table>
                   </div>
                   <div className="text-center" style={{width: '100%'}}>
-                    <button className="buynow">Achetez maintenant</button>
+                    <button onClick={() => {
+
+                      console.log(cart)
+                      axios.post(`/orders/`, {
+                        content: cart,
+                        subtotal: subTotal,
+                        taxes: FinalTaxes,
+                        total: subTotal + FinalTaxes
+                      })
+                        .then(response => {
+                          if (response.status !== 201) {
+                            throw new Error(response.statusText)
+                          }
+                          setCart([])
+                          setSubTotal(0)
+                          setTotalAmount(0)
+                          return console.log(response.data)
+                        })
+                        .catch(error => {
+                          console.log(error)
+                        })
+                      }
+                    } className="buynow">Achetez maintenant</button>
                   </div>
                 </div>
               </td>

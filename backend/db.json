@@ -3,7 +3,7 @@
     {
       "id": 123,
       "name": "une bague",
-      "image": "https://api.lorem.space/image/fashion?w=400&h=400&hash=8B7BCDC2",
+      "image": "https://via.placeholder.com/150/FF1487/FFFFFF",
       "category": [
         439
       ]
@@ -11,35 +11,34 @@
     {
       "id": 453,
       "name": "une montre",
-      "image": "https://api.lorem.space/image/fashion?w=400&h=400&hash=500B67FB",
+      "image": "https://via.placeholder.com/222/0000FF/808080",
       "category": [
         672
-      ]
-    },
-    {
-      "id": 864,
-      "name": "un bracelet",
-      "image": "https://api.lorem.space/image/fashion?w=400&h=400&hash=A89D0DE6",
-      "category": [
-        187
       ]
     },
     {
       "id": 187,
       "name": "des boucles d'oreilles",
-      "image": "https://api.lorem.space/image/fashion?w=400&h=400&hash=225E6693",
+      "image": "https://via.placeholder.com/150/FFFF00/000000",
       "category": [
         672
       ]
     },
     {
-      "id": 497,
-      "name": "des accessoires de mode",
-      "image": "https://api.lorem.space/image/fashion?w=400&h=400&hash=B0E33EF4",
+      "name": "des boucles w bara",
+      "image": "https://via.placeholder.com/150/DHI745/000147",
       "category": [
-        187,
-        439
-      ]
+        187
+      ],
+      "id": 199
+    },
+    {
+      "name": "Eli howa",
+      "image": "https://via.placeholder.com/150/FF1487/FFFFFF",
+      "category": [
+        675
+      ],
+      "id": 455
     }
   ],
   "categories": [
@@ -49,24 +48,125 @@
       "icon": "fa-globe"
     },
     {
-      "id": 187,
-      "name": "Catégorie 2",
-      "icon": "fa-baseball"
-    },
-    {
-      "id": 672,
-      "name": "Catégorie 3",
-      "icon": "fa-gem"
-    },
-    {
       "name": "Rings",
       "icon": "fa-baseball",
-      "id": 673
+      "id": 187
     },
     {
       "name": "Necklaces",
       "icon": "fa-baseball",
-      "id": 674
+      "id": 439
+    },
+    {
+      "name": "Antique",
+      "icon": "fa-baseball",
+      "id": 675
+    }
+  ],
+  "orders": [
+    {
+      "id": 1,
+      "content": [
+        {
+          "id": 123,
+          "name": "une bague",
+          "image": "https://via.placeholder.com/150/FF1487/FFFFFF",
+          "category": [
+            439
+          ],
+          "quantity": 4,
+          "totalAmount": 2
+        },
+        {
+          "id": 187,
+          "name": "des boucles d'oreilles",
+          "image": "https://via.placeholder.com/150/FFFF00/000000",
+          "category": [
+            672
+          ],
+          "quantity": 5,
+          "totalAmount": 2
+        }
+      ],
+      "subtotal": 18,
+      "taxes": 0.54,
+      "total": 18.54
+    },
+    {
+      "content": [
+        {
+          "id": 123,
+          "name": "une bague",
+          "image": "https://via.placeholder.com/150/FF1487/FFFFFF",
+          "category": [
+            439
+          ],
+          "quantity": 5,
+          "totalAmount": 3
+        },
+        {
+          "name": "Eli howa",
+          "image": "https://via.placeholder.com/150/FF1487/FFFFFF",
+          "category": [
+            675
+          ],
+          "id": 455,
+          "quantity": 2,
+          "totalAmount": 1
+        },
+        {
+          "name": "des boucles w bara",
+          "image": "https://via.placeholder.com/150/DHI745/000147",
+          "category": [
+            187
+          ],
+          "id": 199,
+          "quantity": 4,
+          "totalAmount": 1
+        }
+      ],
+      "subtotal": 21,
+      "taxes": 0.63,
+      "total": 21.63,
+      "id": 2
+    },
+    {
+      "content": [
+        {
+          "id": 123,
+          "name": "une bague",
+          "image": "https://via.placeholder.com/150/FF1487/FFFFFF",
+          "category": [
+            439
+          ],
+          "quantity": 5,
+          "totalAmount": 3
+        },
+        {
+          "name": "Eli howa",
+          "image": "https://via.placeholder.com/150/FF1487/FFFFFF",
+          "category": [
+            675
+          ],
+          "id": 455,
+          "quantity": 2,
+          "totalAmount": 1
+        },
+        {
+          "name": "des boucles w bara",
+          "image": "https://via.placeholder.com/150/DHI745/000147",
+          "category": [
+            187
+          ],
+          "id": 199,
+          "quantity": 4,
+          "totalAmount": 1
+        }
+      ],
+      "subtotal": 21,
+      "taxes": 0.63,
+      "total": 21.63,
+      "id": 3
     }
   ]
 }
