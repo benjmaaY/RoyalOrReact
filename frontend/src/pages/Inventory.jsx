@@ -92,9 +92,6 @@ export default function Inventory() {
             }
           })
         }} className="categoryBtn"><i className="fa-solid fa-plus" style={{marginRight: '0.7rem'}} />Ajouter une nouvelle catégorie</button>
-        <NavLink to="/products">
-        <a style={{textDecoration: 'none', color: 'black'}} className="categoryBtn active"><i className="fa-solid fa-gear" style={{marginRight: '0.7rem'}} />Gérer vos produits</a>
-        </NavLink>
       </div>
       <br />
       <div className="row container tableInfos">

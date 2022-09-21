@@ -1,27 +1,131 @@
-import React , {useEffect, useState} from 'react'
+import React , {useEffect, useState, useMemo, useCallback} from 'react'
 import axios from "axios"
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import Swal from 'sweetalert2'
 import {NavLink} from "react-router-dom";
+import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { styled } from '@mui/material/styles';
+import { tableCellClasses } from '@mui/material/TableCell';
 
 
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.action.hover,
+      color: theme.palette.common.black,
+      fontWeight: "700",
+      fontSize: "1.2rem",
+      fontFamily: "Gilroy"
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+  
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+        fontFamily: "Gilroy"
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    },
+  }));
 
+function Row(props) {
+    const { row } = props;
+    const [open, setOpen] = React.useState(false);
+    
+
+    return (
+      <React.Fragment>
+        <StyledTableRow  sx={{ '& > *': { borderBottom: 'unset' } }}>
+          <TableCell>
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+          <TableCell component="th" scope="row">
+            {row.id}
+          </TableCell>
+          <TableCell align="right">{row.client}</TableCell>
+          <TableCell align="right">{row.date}</TableCell>
+          <TableCell align="right">{row.subtotal}</TableCell>
+          <TableCell align="right">{row.taxes}</TableCell>
+          <TableCell align="right">{row.total}</TableCell>
+          <TableCell align="right"><NavLink to={"/orders/" + row.id} className="btn btn-warning">Afficher</NavLink></TableCell>
+        </StyledTableRow>
+        <StyledTableRow>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <Box sx={{ margin: 1 }}>
+                <Typography variant="h6" gutterBottom component="div">
+                  Contenus de la commande:
+                </Typography>
+                <Table size="small" aria-label="purchases">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell># Produit</TableCell>
+                      <TableCell>Nom</TableCell>
+                      <TableCell align="right">Quantité</TableCell>
+                      <TableCell align="right">Prix total:</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {row.content.map((contentRow) => (
+                      <TableRow key={contentRow.id}>
+                        <TableCell component="th" scope="row">
+                          {contentRow.id}
+                        </TableCell>
+                        <TableCell>{contentRow.name}</TableCell>
+                        <TableCell align="right">
+                            {contentRow.quantity}
+                        </TableCell>
+                        <TableCell align="right">
+                            {contentRow.totalAmount}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Box>
+            </Collapse>
+          </TableCell>
+        </StyledTableRow>
+      </React.Fragment>
+    );
+  }
 
 
 
 export default function Inventory() {
 
-  const [categories, setCategories] = useState([]);
+  const [orders, setOrders] = useState([]);
 
-
-  const fetchCategories = async() => {
-      const result = await axios.get("categories")
-      setCategories(await result.data)
+  
+  const fetchOrders = async() => {
+      const result = await axios.get("orders")
+      setOrders(await result.data)
   }
 
   useEffect(() => {
-    fetchCategories()
+    fetchOrders()
   }, []);
 
   
@@ -40,69 +144,34 @@ export default function Inventory() {
           <i className="fa fa-search icon errspan" />
         </div>
       </div>
-      <div className="buttons">
-        <button onClick={() => {
-          Swal.fire({
-            title: 'Ajouter une nouvelle catégorie:',
-            input: 'text',
-            inputAttributes: {
-              autocapitalize: 'off'
-            },
-            showDenyButton: true,
-            denyButtonText: 'Annuler',
-            showLoaderOnConfirm: true,
-            inputPlaceholder: "Nom...",
-            preConfirm: (result) => {
-              console.log(result)
-              return axios.post(`/categories/`, {
-                name: result,
-                icon: "fa-baseball"
-              })
-                .then(response => {
-                  if (response.status !== 201) {
-                    throw new Error(response.statusText)
-                  }
-                  fetchCategories()
-                  return console.log(response.data)
-                })
-                .catch(error => {
-                  Swal.showValidationMessage(
-                    `Request failed: ${error}`
-                  )
-                })
-            },
-            allowOutsideClick: () => !Swal.isLoading()
-          }).then((result) => {
-            if (result.isConfirmed) {
-              let timerInterval
-              Swal.fire({
-                icon: "success",
-                title: 'Success',
-                timer: 1000,
-                timerProgressBar: true,
-                didOpen: () => {
-                  const b = Swal.getHtmlContainer().querySelector('b')
-                  timerInterval = setInterval(() => {
-                    b.textContent = Swal.getTimerLeft()
-                  }, 100)
-                },
-                willClose: () => {
-                  clearInterval(timerInterval)
-                }
-              })
-            }
-          })
-        }} className="categoryBtn"><i className="fa-solid fa-plus" style={{marginRight: '0.7rem'}} />Ajouter une nouvelle catégorie</button>
-        <NavLink to="/products">
-        <a style={{textDecoration: 'none', color: 'black'}} className="categoryBtn active"><i className="fa-solid fa-gear" style={{marginRight: '0.7rem'}} />Gérer vos produits</a>
-        </NavLink>
-      </div>
       <br />
       <div className="row container tableInfos">
-        
+        <TableContainer component={Paper}>
+        <Table aria-label="collapsible table" size="small">
+            <TableHead>
+            <TableRow>
+                <StyledTableCell />
+                <StyledTableCell>#</StyledTableCell>
+                <StyledTableCell align="right">Client:</StyledTableCell>
+                <StyledTableCell align="right">Date:</StyledTableCell>
+                <StyledTableCell align="right">Subtotal:</StyledTableCell>
+                <StyledTableCell align="right">Taxes:</StyledTableCell>
+                <StyledTableCell align="right">Total:</StyledTableCell>
+                <StyledTableCell align="right">Facture:</StyledTableCell>
+            </TableRow>
+            </TableHead>
+            <TableBody>
+                {orders.map(el => {
+                    return  <Row key={el.id} row={el} />
+                })}
+            
+            </TableBody>
+        </Table>
+        </TableContainer>
       </div>
     </div>
   </div>
+  
 </div>
 
   )

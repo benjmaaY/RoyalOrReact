@@ -1,25 +1,17 @@
 {
   "products": [
     {
-      "id": 123,
-      "name": "une bague",
+      "name": "une bague sans couleur",
       "image": "https://via.placeholder.com/150/FF1487/FFFFFF",
       "category": [
         439
-      ]
+      ],
+      "id": 123
     },
     {
       "id": 453,
       "name": "une montre",
       "image": "https://via.placeholder.com/222/0000FF/808080",
-      "category": [
-        672
-      ]
-    },
-    {
-      "id": 187,
-      "name": "des boucles d'oreilles",
-      "image": "https://via.placeholder.com/150/FFFF00/000000",
       "category": [
         672
       ]
@@ -65,18 +57,7 @@
   ],
   "orders": [
     {
-      "id": 1,
       "content": [
-        {
-          "id": 123,
-          "name": "une bague",
-          "image": "https://via.placeholder.com/150/FF1487/FFFFFF",
-          "category": [
-            439
-          ],
-          "quantity": 4,
-          "totalAmount": 2
-        },
         {
           "id": 187,
           "name": "des boucles d'oreilles",
@@ -85,24 +66,27 @@
             672
           ],
           "quantity": 5,
+          "totalAmount": 4
+        },
+        {
+          "id": 123,
+          "name": "une bague",
+          "image": "https://via.placeholder.com/150/FF1487/FFFFFF",
+          "category": [
+            439
+          ],
+          "quantity": 3,
+          "totalAmount": 3
+        },
+        {
+          "id": 453,
+          "name": "une montre",
+          "image": "https://via.placeholder.com/222/0000FF/808080",
+          "category": [
+            672
+          ],
+          "quantity": 4,
           "totalAmount": 2
-        }
-      ],
-      "subtotal": 18,
-      "taxes": 0.54,
-      "total": 18.54
-    },
-    {
-      "content": [
-        {
-          "id": 123,
-          "name": "une bague",
-          "image": "https://via.placeholder.com/150/FF1487/FFFFFF",
-          "category": [
-            439
-          ],
-          "quantity": 5,
-          "totalAmount": 3
         },
         {
           "name": "Eli howa",
@@ -111,62 +95,16 @@
             675
           ],
           "id": 455,
-          "quantity": 2,
-          "totalAmount": 1
-        },
-        {
-          "name": "des boucles w bara",
-          "image": "https://via.placeholder.com/150/DHI745/000147",
-          "category": [
-            187
-          ],
-          "id": 199,
-          "quantity": 4,
-          "totalAmount": 1
+          "quantity": 9,
+          "totalAmount": 10
         }
       ],
-      "subtotal": 21,
-      "taxes": 0.63,
-      "total": 21.63,
-      "id": 2
-    },
-    {
-      "content": [
-        {
-          "id": 123,
-          "name": "une bague",
-          "image": "https://via.placeholder.com/150/FF1487/FFFFFF",
-          "category": [
-            439
-          ],
-          "quantity": 5,
-          "totalAmount": 3
-        },
-        {
-          "name": "Eli howa",
-          "image": "https://via.placeholder.com/150/FF1487/FFFFFF",
-          "category": [
-            675
-          ],
-          "id": 455,
-          "quantity": 2,
-          "totalAmount": 1
-        },
-        {
-          "name": "des boucles w bara",
-          "image": "https://via.placeholder.com/150/DHI745/000147",
-          "category": [
-            187
-          ],
-          "id": 199,
-          "quantity": 4,
-          "totalAmount": 1
-        }
-      ],
-      "subtotal": 21,
-      "taxes": 0.63,
-      "total": 21.63,
-      "id": 3
+      "subtotal": 127,
+      "taxes": 3.81,
+      "total": 130.81,
+      "date": "September 21st 2022, 12:31:55 am",
+      "client": "Client Passager",
+      "id": 1
     }
   ]
 }

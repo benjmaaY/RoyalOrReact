@@ -8,6 +8,7 @@ import Inventory from "./pages/Inventory";
 import NavBar from "./pages/NavBar";
 import Products from "./pages/Products";
 import Orders from "./pages/Orders";
+import Facture from "./pages/Facture";
 
 
 function App() {
@@ -19,7 +20,8 @@ function App() {
           <Route path="/" element={<HomePage/>} />
           <Route path="/inventory" element={<Inventory/>} />
           <Route path="/products" element={<Products/>} />
-          <Route path="/orders" element={<Orders/>} />
+          <Route path="/orders" element={<Orders/>} exact/>
+          <Route path="/orders/:id" element={<Facture/>} exact/>
         </Routes>
       </div>
     </Router>

@@ -1,7 +1,7 @@
 import React , {useEffect, useState} from 'react'
 import {Link} from "react-router-dom";
 import axios from "axios"
-
+import moment from "moment";
 
 
 export default function HomePage() {
@@ -304,7 +304,9 @@ export default function HomePage() {
                         content: cart,
                         subtotal: subTotal,
                         taxes: FinalTaxes,
-                        total: subTotal + FinalTaxes
+                        total: subTotal + FinalTaxes,
+                        date:  moment().format('MMMM Do YYYY, h:mm:ss a'),
+                        client: "Client Passager"
                       })
                         .then(response => {
                           if (response.status !== 201) {
