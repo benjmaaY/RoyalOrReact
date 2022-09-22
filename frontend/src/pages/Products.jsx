@@ -29,35 +29,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import { Button } from '@mui/material';
+import { Button, Skeleton } from '@mui/material';
 import { red } from '@mui/material/colors';
 
-
-function createData(name, calories, fat, carbs, protein) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-  };
-}
-
-const rows = [
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Donut', 452, 25.0, 51, 4.9),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Honeycomb', 408, 3.2, 87, 6.5),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Jelly Bean', 375, 0.0, 94, 0.0),
-  createData('KitKat', 518, 26.0, 65, 7.0),
-  createData('Lollipop', 392, 0.2, 98, 0.0),
-  createData('Marshmallow', 318, 0, 81, 2.0),
-  createData('Nougat', 360, 19.0, 9, 37.0),
-  createData('Oreo', 437, 18.0, 63, 4.0),
-];
 
 const MySwal = withReactContent(Swal)
 
@@ -164,6 +138,7 @@ export default function Inventory() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectValue, setSelectValue] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -177,34 +152,7 @@ export default function Inventory() {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelected = rows.map((n) => n.name);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
-  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -215,15 +163,12 @@ export default function Inventory() {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - products.length) : 0;
 
   const fetchCategories = async() => {
       const result = await axios.get("categories")
@@ -245,6 +190,7 @@ export default function Inventory() {
   const fetchProducts = async() => {
       const result = await axios.get("products")
       setProducts(await result.data)
+      setIsLoading(false)
   }
 
   useEffect(() => {
@@ -405,11 +351,39 @@ export default function Inventory() {
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={products.length}
             />
             <TableBody>
+              {isLoading ? 
+                <TableRow
+                tabIndex={-1}
+                key={-1}
+                  >
+                    <TableCell
+                      id='-1'
+                      component="th"
+                      scope="row"
+                      padding="normal"
+                    >
+                      <Skeleton variant="rectangular" width={"100%"} /> 
+                    </TableCell>
+                    <TableCell> <Skeleton variant="rectangular" width={"100%"} /> </TableCell>
+                    <TableCell><Skeleton variant="circular" width={"100px"} /> </TableCell>
+                    <TableCell><Skeleton variant="rectangular" width={"100%"} /></TableCell>
+                    <TableCell> 
+                      <button style={{border: "none", backgroundColor: "white", cursor: "default", width: "25%"}}>
+                        <Skeleton variant="rectangular" width={"100%"} style={{borderRadius: "25px", marginRight: "0.2rem"}} />
+                      </button>
+                      <button style={{border: "none", backgroundColor: "white", cursor: "default", width: "25%"}}>
+                        <Skeleton variant="rectangular" width={"100%"} style={{borderRadius: "25px"}} />
+                      </button>
+                    </TableCell>
+                  </TableRow> : 
+                    <div>
+                      
+                    </div>
+                  }
               {stableSort(products, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
@@ -495,107 +469,13 @@ export default function Inventory() {
                             showDenyButton: true,
                             denyButtonText: 'Annuler',
                             showLoaderOnConfirm: true,
-                            preConfirm: () => {
-                              console.log(row.name)
-                              console.log(row.image)
-                              console.log("/////////")
-                              if (nameToSubmit == undefined) {
-                                nameToSubmit = row.name
-                              }
-                              if (imageToSubmit == undefined) {
-                                imageToSubmit = row.image
-                              }
-                              if (selectToSubmit == undefined) {
-                                selectToSubmit = row.category
-                              }
-                              return axios.put(`/products/` + row.id, {
-                                name: nameToSubmit,
-                                image: imageToSubmit,
-                                category: selectToSubmit
-                              })
-                                .then(response => {
-                                  if (response.status !== 200) {
-                                    throw new Error(response.statusText)
-                                  }
-                                  fetchProducts()
-                                  return console.log(response.data)
-                                })
-                                .catch(error => {
-                                  Swal.showValidationMessage(
-                                    `Request failed: ${error}`
-                                  )
-                                })
-                            },
+                            
                             allowOutsideClick: () => !Swal.isLoading()
-                          }).then((result) => {
-                            if (result.isConfirmed) {
-                              let timerInterval
-                              Swal.fire({
-                                icon: "success",
-                                title: 'Success',
-                                timer: 1000,
-                                timerProgressBar: true,
-                                didOpen: () => {
-                                  const b = Swal.getHtmlContainer().querySelector('b')
-                                  timerInterval = setInterval(() => {
-                                    b.textContent = Swal.getTimerLeft()
-                                  }, 100)
-                                },
-                                willClose: () => {
-                                  clearInterval(timerInterval)
-                                }
-                              })
-                            }
                           })
                         }}>
                           Modifier
                         </Button> 
-                        <Button style={{borderRadius: "25px"}} variant="contained" endIcon={<DeleteIcon />} color="error" onClick={() => {
-                          Swal.fire({
-                            title: 'Etes-vous sur?',
-                            text: "Vous ne pourrez pas revenir en arrière !",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Oui, supprimez-le !',
-                            preConfirm: (result) => {
-                              console.log(result)
-                              return axios.delete(`/products/` + row.id)
-                                .then(response => {
-                                  if (response.status !== 200) {
-                                    throw new Error(response.statusText)
-                                  }
-                                  fetchProducts()
-                                  return console.log(response.data)
-                                })
-                                .catch(error => {
-                                  Swal.showValidationMessage(
-                                    `Request failed: ${error}`
-                                  )
-                                })
-                            },
-                          }).then((result) => {
-                            if (result.isConfirmed) {
-                              let timerInterval
-                              Swal.fire({
-                                icon: "success",
-                                title: 'Supprimé!',
-                                timer: 1000,
-                                timerProgressBar: true,
-                                didOpen: () => {
-                                  const b = Swal.getHtmlContainer().querySelector('b')
-                                  timerInterval = setInterval(() => {
-                                    b.textContent = Swal.getTimerLeft()
-                                  }, 100)
-                                },
-                                willClose: () => {
-                                  clearInterval(timerInterval)
-                                }
-                              })
-                            }
-                          })
-                        }}>
+                        <Button style={{borderRadius: "25px"}} variant="contained" endIcon={<DeleteIcon />} color="error" >
                           Supprimer
                         </Button>
                       </TableCell>

@@ -19,6 +19,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material/TableCell';
+import { Skeleton } from '@mui/material';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -117,11 +118,12 @@ function Row(props) {
 export default function Inventory() {
 
   const [orders, setOrders] = useState([]);
-
+    const [isLoading, setIsLoading] = useState(true)
   
   const fetchOrders = async() => {
       const result = await axios.get("orders")
       setOrders(await result.data)
+      setIsLoading(false)
   }
 
   useEffect(() => {
@@ -146,6 +148,7 @@ export default function Inventory() {
       </div>
       <br />
       <div className="row container tableInfos">
+        
         <TableContainer component={Paper}>
         <Table aria-label="collapsible table" size="small">
             <TableHead>
@@ -161,6 +164,25 @@ export default function Inventory() {
             </TableRow>
             </TableHead>
             <TableBody>
+            {isLoading ? <StyledTableRow  sx={{ '& > *': { borderBottom: 'unset' } }}>
+          <TableCell>
+            <IconButton
+              aria-label="expand row"
+              size="small"
+            >
+              <KeyboardArrowDownIcon />
+            </IconButton>
+          </TableCell>
+          <TableCell component="th" scope="row">
+            <Skeleton variant="rectangular" width={"100%"} />
+          </TableCell>
+          <TableCell align="right"><Skeleton variant="rectangular" width={"100%"} /></TableCell>
+          <TableCell align="right"><Skeleton variant="rectangular" width={"100%"} /></TableCell>
+          <TableCell align="right"><Skeleton variant="rectangular" width={"100%"} /></TableCell>
+          <TableCell align="right"><Skeleton variant="rectangular" width={"100%"} /></TableCell>
+          <TableCell align="right"><Skeleton variant="rectangular" width={"100%"} /></TableCell>
+          <TableCell align="right"><Skeleton variant="rectangular" width={"100%"} /></TableCell>
+        </StyledTableRow> : <div></div>}
                 {orders.map(el => {
                     return  <Row key={el.id} row={el} />
                 })}

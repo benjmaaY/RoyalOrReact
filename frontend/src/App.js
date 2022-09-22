@@ -9,6 +9,7 @@ import NavBar from "./pages/NavBar";
 import Products from "./pages/Products";
 import Orders from "./pages/Orders";
 import Facture from "./pages/Facture";
+import Settings from "./pages/Settings";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/products" element={<Products/>} />
           <Route path="/orders" element={<Orders/>} exact/>
           <Route path="/orders/:id" element={<Facture/>} exact/>
+          <Route path="/settings" element={<Settings/>} exact/>
         </Routes>
       </div>
     </Router>

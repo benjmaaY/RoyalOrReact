@@ -1,10 +1,15 @@
 import React , {useEffect, useState} from 'react'
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import axios from "axios"
 import moment from "moment";
+import { Button, Skeleton } from '@mui/material';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 
 export default function HomePage() {
+
+  const [message, setMessage] = useState(<div className="text-center" style={{marginTop: "3rem"}}><AddShoppingCartIcon /><br/>Commande vide, ajouter des produits</div>)
 
     const taxRate = 3;
     function round2Fixed(value) {
@@ -24,6 +29,8 @@ export default function HomePage() {
 
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
+    const [categoriesAreLoading, setCategoriesAreLoading] = useState(true)
+    const [productsAreLoading, setProductsAreLoading] = useState(true)
     const [cart, setCart] = useState([]);
     const [subTotal, setSubTotal] = useState(0)
     const [totalAmount, setTotalAmount] = useState(0)
@@ -37,12 +44,15 @@ export default function HomePage() {
         const result = await axios.get("products")
         setProducts(await result.data)
         setShowenProducts(await result.data)
+        setProductsAreLoading(false)
     }
 
     const fetchCategories = async() => {
         const result = await axios.get("categories")
         setCategories(await result.data)
+        setCategoriesAreLoading(false)
     }
+
 
     const addProductToCart = async(product) =>{
         // check if the adding product exist
@@ -145,6 +155,7 @@ export default function HomePage() {
             setShowenProducts(products.filter((item) => item.category.indexOf(selectedCategory) !== -1))
         }
     }, [selectedCategory])
+    
 
 
   return (
@@ -162,6 +173,14 @@ export default function HomePage() {
       </div>
     </div>
     <div className="buttons">
+      {categoriesAreLoading 
+        ? <div>
+              <button style={{border: "none", backgroundColor: "white", cursor: "default"}}><Skeleton variant="rounded" style={{borderRadius: "25px", margin: "none"}} width={200} height={40} /></button>
+              <button style={{border: "none", backgroundColor: "white", cursor: "default"}}><Skeleton variant="rounded" style={{borderRadius: "25px", margin: "none"}} width={200} height={40} /></button>
+              <button style={{border: "none", backgroundColor: "white", cursor: "default"}}><Skeleton variant="rounded" style={{borderRadius: "25px", margin: "none"}} width={200} height={40} /></button>
+          </div>
+        : ""
+      }
         {categories.map(category => {
             return <button key={category.id} onClick={() => {
                 setSelectedCategory(category.id)
@@ -170,6 +189,28 @@ export default function HomePage() {
     </div>
     <br />
     <div className="row middleContent">
+    
+      {productsAreLoading 
+        ? <div>
+          <div className="flex-container col-3">
+              <div className="image">
+              <Skeleton style={{borderRadius: "25px"}} variant="rectangular" width={"100%"} height={"100%"}/>
+              </div>
+          </div>
+          <div className="flex-container col-3">
+              <div className="image">
+              <Skeleton style={{borderRadius: "25px"}} variant="rectangular" width={"100%"} height={"100%"}/>
+              </div>
+          </div>
+          <div className="flex-container col-3">
+              <div className="image">
+              <Skeleton style={{borderRadius: "25px"}} variant="rectangular" width={"100%"} height={"100%"}/>
+              </div>
+          </div>
+        </div>
+        : ""
+      }
+      
         {showenProducts.filter(post => {
             if (query === '') {
                 return post;
@@ -209,7 +250,7 @@ export default function HomePage() {
           <tbody><tr>
               <td style={{overflow: 'auto', height: '50px'}} valign="top">
                 {cart.length == 0 && 
-                  <h3>Commande vide</h3>
+                  message
                 }
                 {cart.map(singleProduct => {
                     return (
@@ -312,9 +353,20 @@ export default function HomePage() {
                           if (response.status !== 201) {
                             throw new Error(response.statusText)
                           }
+                          console.log(response)
                           setCart([])
                           setSubTotal(0)
                           setTotalAmount(0)
+                          setMessage(<div style={{marginTop: "3rem"}}>
+                            <figure class="text-center">
+                              <blockquote class="blockquote">
+                                <p><NavLink style={{textDecoration: "none"}} to={"/orders/"+response.data.id}> <Button style={{borderRadius: "25px", marginRight: "5px", backgroundColor: "#FFCA40", boxShadow: "none"}} variant="contained" endIcon={ <ReceiptIcon /> }>  Facture </Button> </NavLink> </p>
+                              </blockquote>
+                              <figcaption class="blockquote-footer">
+                                <cite title="Source Title">Commande ajouté</cite>
+                              </figcaption>
+                            </figure>
+                          </div>)
                           return console.log(response.data)
                         })
                         .catch(error => {
