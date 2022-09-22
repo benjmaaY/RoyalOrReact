@@ -1,8 +1,8 @@
 {
   "products": [
     {
-      "name": "une bague sans couleur",
-      "image": "https://via.placeholder.com/150/FF1487/FFFFFF",
+      "name": "une bague sans couleeeeur",
+      "image": "https://via.placeholder.com/150/FF1487/FFFFRF",
       "category": [
         439
       ],
@@ -17,20 +17,21 @@
       ]
     },
     {
-      "name": "des boucles w bara",
-      "image": "https://via.placeholder.com/150/DHI745/000147",
-      "category": [
-        187
-      ],
-      "id": 199
-    },
-    {
       "name": "Eli howa",
       "image": "https://via.placeholder.com/150/FF1487/FFFFFF",
       "category": [
         675
       ],
       "id": 455
+    },
+    {
+      "name": "Ring",
+      "image": "https://via.placeholder.com/150/DHE187/000147",
+      "category": [
+        675,
+        439
+      ],
+      "id": 456
     }
   ],
   "categories": [
@@ -53,6 +54,11 @@
       "name": "Antique",
       "icon": "fa-baseball",
       "id": 675
+    },
+    {
+      "name": "Moderne",
+      "icon": "fa-baseball",
+      "id": 676
     }
   ],
   "orders": [
