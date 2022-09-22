@@ -411,11 +411,13 @@ export default function Inventory() {
                       <TableCell> 
                         <Button style={{borderRadius: "25px", marginRight: "5px", backgroundColor: "#FFCA40", boxShadow: "none"}} variant="contained" startIcon={<ModeEditIcon />} onClick={() => {
                           let defaultValue = []
-                          let nameToSubmit
-                          let imageToSubmit
-                          let selectToSubmit
+                          let nameToSubmit = row.name
+                          let imageToSubmit = row.image
+                          
                           row.category.forEach(res => {
+                            console.log("777")
                             console.log(res)
+                            console.log("numbers")
                             console.log(categories)
                             if (search(res, categories) == undefined) {
 
@@ -429,6 +431,7 @@ export default function Inventory() {
                             }
                             console.log(defaultValue)
                           })
+                          let selectToSubmit = row.category
                           
                           MySwal.fire({
                             title: 'Modifier produit:',
@@ -469,13 +472,86 @@ export default function Inventory() {
                             showDenyButton: true,
                             denyButtonText: 'Annuler',
                             showLoaderOnConfirm: true,
-                            
+                            preConfirm: () => {
+                              return axios.put(`/products/`+row.id, {
+                                name: nameToSubmit,
+                                image: imageToSubmit,
+                                category: selectToSubmit
+                              })
+                                .then(response => {
+                                  if (response.status !== 200) {
+                                    throw new Error(response.statusText)
+                                  }
+                                  fetchProducts()
+                                  return console.log(response.data)
+                                })
+                                .catch(error => {
+                                  Swal.showValidationMessage(
+                                    `Request failed: ${error}`
+                                  )
+                                })
+                            },
                             allowOutsideClick: () => !Swal.isLoading()
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              Swal.fire(
+                                {
+                                  title: "Modifié!",
+                                  timer: 1000,
+                                  icon: "success"
+                                }
+                              )
+                            }
                           })
                         }}>
                           Modifier
                         </Button> 
-                        <Button style={{borderRadius: "25px"}} variant="contained" endIcon={<DeleteIcon />} color="error" >
+                        <Button style={{borderRadius: "25px"}} variant="contained" endIcon={<DeleteIcon />} color="error" onClick={() => {
+                          Swal.fire({
+                            title: 'Etes-vous sur?',
+                            text: "Vous ne pourrez pas revenir en arrière !",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Oui, supprimez-le !',
+                            preConfirm: (result) => {
+                              console.log(result)
+                              return axios.delete(`/products/` + row.id)
+                                .then(response => {
+                                  if (response.status !== 200) {
+                                    throw new Error(response.statusText)
+                                  }
+                                  fetchProducts()
+                                  return console.log(response.data)
+                                })
+                                .catch(error => {
+                                  Swal.showValidationMessage(
+                                    `Request failed: ${error}`
+                                  )
+                                })
+                            },
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              let timerInterval
+                              Swal.fire({
+                                icon: "success",
+                                title: 'Supprimé!',
+                                timer: 1000,
+                                timerProgressBar: true,
+                                didOpen: () => {
+                                  const b = Swal.getHtmlContainer().querySelector('b')
+                                  timerInterval = setInterval(() => {
+                                    b.textContent = Swal.getTimerLeft()
+                                  }, 100)
+                                },
+                                willClose: () => {
+                                  clearInterval(timerInterval)
+                                }
+                              })
+                            }
+                          })
+                        }}>
                           Supprimer
                         </Button>
                       </TableCell>
